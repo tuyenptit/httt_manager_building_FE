@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react"
-import { getListCompanies, addCompany } from "../api/company"  // sửa
+import { getList, add } from "../api/employees"  // sửa
 import { Table, Button } from 'antd'
 import ModalAdd from "../components/ModalAdd"
 
-function Company() {
+function Employees() {
     const [data, setData] = useState();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [body, setBody] = useState({});
 
     const loadData = async () => {
-        const data = await getListCompanies()  // sửa
+        const data = await getList()  // sửa
         setData(data)
     }
 
@@ -22,7 +22,7 @@ function Company() {
     };
 
     const handleOk = () => {
-        addCompany(body)  // sửa
+        add(body)  // sửa
         .then(() => {
             loadData()
             setIsModalOpen(false)
@@ -42,9 +42,9 @@ function Company() {
 
     const columns = [  // sửa
         {
-            title: 'Tên công ty',
-            dataIndex: 'companyName',
-            key: 'companyName',
+            title: 'Mã nhân viên',
+            dataIndex: 'employeeId',
+            key: 'employeeId',
         },
         {
             title: 'Mã công ty',
@@ -52,32 +52,22 @@ function Company() {
             key: 'companyId',
         },
         {
-            title: 'Mã só thuế',
-            dataIndex: 'taxId',
-            key: 'taxId',
+            title: 'Họ và Tên',
+            dataIndex: 'fullName',
+            key: 'fullName',
         },
         {
-            title: 'fieldOfActivity',
-            dataIndex: 'fieldOfActivity',
-            key: 'fieldOfActivity',
+            title: 'Số CCCD',
+            dataIndex: 'idCard',
+            key: 'idCard',
         },
         {
-            title: 'numberOfEmployees',
-            dataIndex: 'numberOfEmployees',
-            key: 'numberOfEmployees',
+            title: 'Ngày tháng năm sinh',
+            dataIndex: 'birthDate',
+            key: 'birthDate',
         },
         {
-            title: 'officeAddress',
-            dataIndex: 'officeAddress',
-            key: 'officeAddress',
-        },
-        {
-            title: 'Diện tích sàn',
-            dataIndex: 'officeArea',
-            key: 'officeArea',
-        },
-        {
-            title: 'SĐT liên hệ',
+            title: 'Số điện thoại',
             dataIndex: 'phone',
             key: 'phone',
         },
@@ -140,13 +130,8 @@ function Company() {
                         key: 'officeAddress',
                     },
                     {
-                        title: 'Diện tích sàn',
+                        title: 'Số điện thoại',
                         dataIndex: 'officeArea',
-                        key: 'officeArea',
-                    },
-                    {
-                        title: 'SĐT liên hệ',
-                        dataIndex: 'phone',
                         key: 'phone',
                     },
                 ]}
@@ -155,4 +140,4 @@ function Company() {
     )
 }
 
-export default Company
+export default Employees

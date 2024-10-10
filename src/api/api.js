@@ -7,7 +7,7 @@ async function rootApi(config) {
     headers: {
       "Content-Type": "application/json",
     },
-    baseURL: "http://192.168.20.175:3001/api",
+    baseURL: "http://localhost:3001/api",
     timeout: 3000,
   });
 
