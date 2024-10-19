@@ -1,16 +1,25 @@
 import { useEffect, useState } from "react"
-import { getListbuilding_employees, addbuilding_employees } from "../api/building_employees"  // sửa
-import { Table, Button } from 'antd'
+import { getListbuilding_employees, addbuilding_employees, getSalary } from "../api/building_employees"  // sửa
+import { Table, Button, Modal, Divider } from 'antd'
 import ModalAdd from "../components/ModalAdd"
 
 function Buildingemployees() {
     const [data, setData] = useState();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [body, setBody] = useState({});
+    const [dataSalary, setDataSalary] = useState()
+
+    console.log("dataSalary", dataSalary)
 
     const loadData = async () => {
         const data = await getListbuilding_employees()  // sửa
         setData(data)
+    }
+
+    const getSalaryData = async (id) => {
+        const data = await getSalary(id)
+        console.log("data", data)
+        setDataSalary(data)
     }
 
     useEffect(() => {
@@ -23,13 +32,13 @@ function Buildingemployees() {
 
     const handleOk = () => {
         addbuilding_employees(body)  // sửa
-        .then(() => {
-            loadData()
-            setIsModalOpen(false)
-        })
-        .catch(err => {
-            console.log("err", err)
-        })
+            .then(() => {
+                loadData()
+                setIsModalOpen(false)
+            })
+            .catch(err => {
+                console.log("err", err)
+            })
     };
 
     const handleCancel = () => {
@@ -37,7 +46,7 @@ function Buildingemployees() {
     };
 
     const onChange = (e) => {
-        setBody({...body, [e.target.name]: e.target.value})
+        setBody({ ...body, [e.target.name]: e.target.value })
     }
 
     const columns = [  // sửa
@@ -46,7 +55,7 @@ function Buildingemployees() {
             dataIndex: 'bul_employeeId',
             key: 'bul_employeeId',
         },
-       
+
         {
             title: 'Họ và Tên',
             dataIndex: 'fullName',
@@ -73,9 +82,15 @@ function Buildingemployees() {
             key: 'position',
         },
         {
-            title: 'Lương cơ bản',
-            dataIndex: 'salaryBase',
-            key: 'salaryBase',
+            title: 'Action',
+            key: 'operation',
+            fixed: 'right',
+            width: 100,
+            render: (e) => <button onClick={
+                () => {
+                    getSalaryData(e.bul_employeeId)
+                }
+            }>Xem phiếu lương</button>,
         },
     ]
 
@@ -110,7 +125,7 @@ function Buildingemployees() {
                         dataIndex: 'bul_employeeId',
                         key: 'bul_employeeId',
                     },
-                   
+
                     {
                         title: 'Họ và Tên',
                         dataIndex: 'fullName',
@@ -138,6 +153,18 @@ function Buildingemployees() {
                     },
                 ]}
             />
+
+            <Modal
+                title="Phí dịch vụ toà nhà"
+                open={dataSalary}
+                onCancel={() => setDataSalary(undefined)}
+                onOk={() => setDataSalary(undefined)}
+            >
+                <p>Lương cơ bản: {dataSalary?.base}</p>
+                <p>Lương hoa hồng: {dataSalary?.hoaHongLuowng}</p>
+                <Divider />
+                <p>Tổng: {dataSalary?.sum}</p>
+            </Modal>
         </div>
     )
 }

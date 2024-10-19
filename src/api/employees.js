@@ -19,4 +19,13 @@ const add= async (data) => {
   );
 };
 
-export { getList, add };
+const getInOut = async (id) => {
+  return await rootApi(
+    {
+      url: `access_log/${id}`,
+      method: "get",
+    },
+  );
+};
+
+export { getList, add, getInOut };

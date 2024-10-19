@@ -19,4 +19,13 @@ const addbuilding_employees= async (data) => {
   );
 };
 
-export { getListbuilding_employees, addbuilding_employees };
+const getSalary = async (id) => {
+  return await rootApi(
+    {
+      url: `building_employees/${id}`,
+      method: "get",
+    },
+  );
+};
+
+export { getListbuilding_employees, addbuilding_employees , getSalary};

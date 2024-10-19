@@ -19,4 +19,13 @@ const addCompany = async (data) => {
   );
 };
 
-export { getListCompanies, addCompany };
+const getServicesCompany = async (id) => {
+  return await rootApi(
+    {
+      url: `company/services_company/${id}`,
+      method: "get",
+    },
+  );
+};
+
+export { getListCompanies, addCompany, getServicesCompany };

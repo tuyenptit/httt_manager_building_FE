@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react"
-import { getListCompanies, addCompany } from "../api/company"  // sửa
-import { Table, Button } from 'antd'
+import { getListCompanies, addCompany, getServicesCompany } from "../api/company"  // sửa
+import { Table, Button, Modal, Divider } from 'antd'
 import ModalAdd from "../components/ModalAdd"
 
 function Company() {
     const [data, setData] = useState();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [body, setBody] = useState({});
+    const [dataServicesCompany, setDataServicesCompany] = useState();
 
     const loadData = async () => {
         const data = await getListCompanies()  // sửa
         setData(data)
+    }
+
+    const getServicesCompanyData = async (id) => {
+        const data = await getServicesCompany(id)
+        console.log("data", data)
+        setDataServicesCompany(data)
     }
 
     useEffect(() => {
@@ -81,6 +88,17 @@ function Company() {
             dataIndex: 'phone',
             key: 'phone',
         },
+        {
+            title: 'Action',
+            key: 'operation',
+            fixed: 'right',
+            width: 100,
+            render: (e) => <button onClick={
+                () => {
+                    getServicesCompanyData(e.companyId)
+                }
+            }>Xem phí dịch vụ</button>,
+        },
     ]
 
     return (
@@ -93,6 +111,7 @@ function Company() {
                 Thêm mới
             </Button>
             <Table
+                onClick
                 scroll={{
                     y: "calc(100vh - 280px)",
                     x: "calc(100vw - 280px)"
@@ -151,6 +170,18 @@ function Company() {
                     },
                 ]}
             />
+
+            <Modal
+                title="Phí dịch vụ toà nhà"
+                open={dataServicesCompany}
+                onCancel={() => setDataServicesCompany(undefined)}
+            >
+                <p>Phí cơ bản: {dataServicesCompany?.base}</p>
+                <p>Phụ phí sàn: {dataServicesCompany?.priceOfficeSrise}</p>
+                <p>Phụ phí nhân viên: {dataServicesCompany?.priceEmployeeSrise}</p>
+                <Divider />
+                <p>Tổng: {dataServicesCompany?.sumPrice}</p>
+            </Modal>
         </div>
     )
 }

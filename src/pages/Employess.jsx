@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react"
-import { getList, add } from "../api/employees"  // sửa
-import { Table, Button } from 'antd'
+import { getList, add, getInOut } from "../api/employees"  // sửa
+import { Table, Button, Modal, Divider } from 'antd'
 import ModalAdd from "../components/ModalAdd"
 
 function Employees() {
     const [data, setData] = useState();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [body, setBody] = useState({});
+    const [dataInOut, setDataInOut] = useState()
 
     const loadData = async () => {
         const data = await getList()  // sửa
         setData(data)
+    }
+
+    const getInOutData = async (id) => {
+        const data = await getInOut(id)
+        console.log("data", data)
+        setDataInOut(data)
     }
 
     useEffect(() => {
@@ -70,6 +77,35 @@ function Employees() {
             title: 'Số điện thoại',
             dataIndex: 'phone',
             key: 'phone',
+        },
+        {
+            title: 'Action',
+            key: 'operation',
+            fixed: 'right',
+            width: 100,
+            render: (e) => <button onClick={
+                () => {
+                    getInOutData(e.employeeId)
+                }
+            }>Ra/vào</button>,
+        },
+    ]
+    
+    const columnsInOut = [
+        {
+            title: 'Ngày',
+            dataIndex: 'accessTime',
+            key: 'accessTime',
+        },
+        {
+            title: 'Loại',
+            dataIndex: 'accessType',
+            key: 'accessType',
+        },
+        {
+            title: 'Vị trí',
+            dataIndex: 'accessLocation',
+            key: 'accessLocation',
         },
     ]
 
@@ -136,6 +172,20 @@ function Employees() {
                     },
                 ]}
             />
+
+            <Modal
+                title="Ra/vào toà nhà"
+                open={dataInOut}
+                onCancel={() => setDataInOut(undefined)}
+                onOk={() => setDataInOut(undefined)}
+            >
+                <Table
+                    dataSource={dataInOut}
+                    columns={columnsInOut}
+                    pagination={false}
+                    bordered
+                />
+            </Modal>
         </div>
     )
 }

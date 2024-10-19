@@ -8,10 +8,13 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Button, Layout, Menu } from 'antd';
+import { useNavigate } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 
 const RootLayout = () => {
+  const navigate = useNavigate();
+
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -22,21 +25,44 @@ const RootLayout = () => {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={['1']}
+          onClick={menu => {
+            navigate(menu.key)
+          }}
           items={[
             {
-              key: '1',
+              key: '/',
               icon: <UserOutlined />,
-              label: 'nav 1',
+              label: 'Công ty',
             },
             {
-              key: '2',
+              key: '/employees',
               icon: <VideoCameraOutlined />,
-              label: 'nav 2',
+              label: 'Nhân viên',
             },
             {
-              key: '3',
+              key: '/buildingemployees',
               icon: <UploadOutlined />,
-              label: 'nav 3',
+              label: 'Nhân viên toà nhà',
+            },
+            {
+              key: '/services',
+              icon: <UploadOutlined />,
+              label: 'Dịch vụ',
+            },
+            {
+              key: '/access_log',
+              icon: <UploadOutlined />,
+              label: 'Ra vào toà nhà',
+            },
+            {
+              key: '/service_usage',
+              icon: <UploadOutlined />,
+              label: 'Sử dụng dịch vụ',
+            },
+            {
+              key: '/salaries',
+              icon: <UploadOutlined />,
+              label: 'Lương',
             },
           ]}
         />
