@@ -162,6 +162,7 @@ function Buildingemployees() {
             >
                 <p>Lương cơ bản: {dataSalary?.base}</p>
                 <p>Lương hoa hồng: {dataSalary?.hoaHongLuowng}</p>
+                <p style={{fontSize: "10px", fontStyle: "italic"}}>Lương hoa hồng tính bằng 5% phí dịch vụ</p>
                 <Divider />
                 <p>Tổng: {dataSalary?.sum}</p>
             </Modal>

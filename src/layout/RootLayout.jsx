@@ -59,11 +59,6 @@ const RootLayout = () => {
               icon: <UploadOutlined />,
               label: 'Sử dụng dịch vụ',
             },
-            {
-              key: '/salaries',
-              icon: <UploadOutlined />,
-              label: 'Lương',
-            },
           ]}
         />
       </Sider>
